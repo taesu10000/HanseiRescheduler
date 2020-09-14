@@ -1,0 +1,7 @@
+{
+    "python.pythonPath": "C:\\Program Files (x86)\\Python38\\python.exe",
+    "python.linting.pylintArgs" : [
+        "--load-plugins=pylint_django",
+        "--disable=C0103",
+    ]
+}

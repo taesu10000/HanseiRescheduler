@@ -1,0 +1,99 @@
+{% extends 'HanseiApp/frame_manual.html' %}
+{% block content %}
+{% load static %}
+<script src="{% static 'js/jquery.min.js' %}"></script>
+	<form method="post" action="{% url 'Hansei:manual' %}">
+		<div class="row gtr-uniform"style="width: 100%; margin-left: 8%;">
+			<script type="text/javascript">
+				//$("selection#main.wrapper div.inner").css('width',"100rem");
+				//document.write("<div");
+				//document.write("<p style=\"text-transform: unset; margin :0;text-align : left\">Current manual version : v.1.0</p>");
+				//document.write("</div>");
+				document.write("<div class=\'manualimg\'>");		
+				document.write("<img src=\"{% static 'images\Login_v1.0.png' %}\"/>");
+				$("div.manualimg img").css({'width':'100%', 'height':'100%'});
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">Log in the webpage</h5>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">If you don't have account, click <b>Sign</b> in button.</h5>");
+				document.write("</div>");
+
+				document.write("<div class=\'manualimg\'>");
+				document.write("<img src=\"{% static 'images\Signin_v1.0.png' %}\"/>");
+				$("div.manualimg img").css({'width':'100%', 'height':'100%'});
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">Sign in the webpage</h5>");
+				document.write("</div>");
+
+				document.write("<div class=\'manualimg\'>");
+				document.write("<img src=\"{% static 'images\Main_v1.0.png' %}\"/>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">1. You can check imported time table. You can see all schedule in the excel file.</h5>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">2. You can schedul for people and thier message. You can compair onother classrooms' and same classes.</h5>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">3. You can import excel file which has all table information.</h5>");
+				$("div.manualimg img").css({'width':'100%', 'height':'100%'});
+				document.write("</div>");
+
+				document.write("<div class=\'manualimg\'>");
+				document.write("<img src=\"{% static 'images\Excel Table.png' %}\"/>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">1-1. The web program reads classes level in excel file by finding '<b>Key for classes</b>' toward down.</h5>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">1-2. The web program reads until it meets '<b>Can't</b>'.</h5>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">2-1. The web program reads classes by finding classroom which is specific hex color value <b>yellow</b>(#FFFFFF00). It finds the color and recognize it is classroom.</h5>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">3. You can set the size of excel sheet size or it will read default value <b>200 * 30</b>.</h5>");
+				$("div.manualimg img").css({'width':'100%', 'height':'100%'});
+				document.write("</div>");
+
+				document.write("<div class=\'manualimg\'>");
+				document.write("<img src=\"{% static 'images\ImportTable_v1.0.png' %}\"/>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">Import excel table file which has specific rules.</h5>");
+				$("div.manualimg img").css({'width':'100%', 'height':'100%'});
+				document.write("</div>");
+
+				document.write("<div class=\'manualimg\'>");
+				document.write("<img src=\"{% static 'images\ClassroomTableInfo_1_v1.0.png' %}\"/>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">Check all classroom schedule after importing excel.</h5>");
+				$("div.manualimg img").css({'width':'100%', 'height':'100%'});
+				document.write("</div>");
+
+				document.write("<div class=\'manualimg\'>");
+				document.write("<img src=\"{% static 'images\ClassroomTableInfo_2_v1.0.png' %}\"/>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">You can select classroom to check other classes.</h5>");
+				$("div.manualimg img").css({'width':'100%', 'height':'100%'});
+				document.write("</div>");
+
+				document.write("<div class=\'manualimg\'>");
+				document.write("<img src=\"{% static 'images\TimeTableInfo_1_v1.0.png' %}\"/>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">You can make schedule for other people. Only manager can modify it.</h5>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">If you are not a manager for this, you can leave message so the manager can read it.</h5>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">This table will be called main table.</h5>");
+				$("div.manualimg img").css({'width':'100%', 'height':'100%'});
+				document.write("</div>");
+
+				document.write("<div class=\'manualimg\'>");
+				document.write("<img src=\"{% static 'images\TimeTableInfo_2_v1.0.png' %}\"/>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">By click one of the cells, You can see what classes are at the same day.</h5>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">This table will be called reference table.</h5>");
+				$("div.manualimg img").css({'width':'100%', 'height':'100%'});
+				document.write("</div>");
+
+				document.write("<div class=\'manualimg\'>");
+				document.write("<img src=\"{% static 'images\TimeTableInfo_3_v1.0.png' %}\"/>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">If you click one of class in the reference table, You can see where and when the same classes are.</h5>");
+				$("div.manualimg img").css({'width':'100%', 'height':'100%'});
+				document.write("</div>");
+
+				document.write("<div class=\'manualimg\'>");
+				document.write("<img src=\"{% static 'images\TimeTableInfo_4_v1.0.png' %}\"/>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">When you want to schedule, right click one of the cells in the main table.</h5>");
+
+				$("div.manualimg img").css({'width':'100%', 'height':'100%'});
+				document.write("</div>");
+
+				document.write("<div class=\'manualimg\'>");
+				document.write("<img src=\"{% static 'images\TimeTableInfo_5_v1.0.png' %}\"/>");
+				document.write("<h5 style=\"text-transform: unset; margin :0;text-align : left\">You can click main context menu to put class level in or class in sub context menu.</h5>");
+				$("div.manualimg img").css({'width':'100%', 'height':'100%'});
+				document.write("<h6 style=\"text-transform: unset; margin :0;text-align : right\">This menual is modified at 09.02.2020 during Covid-19.</h6>");
+				document.write("</div>");
+
+			</script>
+		</div>
+	</form>
+{% endblock %}
+

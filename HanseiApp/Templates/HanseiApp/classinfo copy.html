@@ -1,0 +1,53 @@
+{% extends 'HanseiApp/classInfoFrame.html' %}
+{% block content %}
+{% load static %}
+<script src="{% static 'js/color-picker.min.js' %}"></script>
+<script src="{% static 'js/classinfo.js' %}"></script>
+	<form method="post" action="{% url 'Hansei:classinfo' %}" id="frm">
+		<div class="gtr-uniform"style="width: 100%;">
+			<script type="text/javascript">
+				var ClassInfo = "{{ClassInfo}}"
+				var Classes = "{{Classes}}"
+				var info = ClassInfo.split("|");
+				//document.write("<div class=\"col-6 col-12-large\" >");
+				document.write("<h3 style=\"line-height: 3.5\">Classes </h3>");
+				document.write("<h5 style=\"line-height: 3.5\">Please fill two textbox and press add button then submit, when you want to submit </h5>");
+				//document.write("</div>");
+
+				document.write("<table class=\"alt\" id=\"classtable\" style=\"width:100%\">");
+					document.write("<tr>");
+						document.write("<th style=\"width:70%\">class name</th>");
+						document.write("<th>color</th>");
+					document.write("</tr>");
+					info.forEach(element => {
+						var ele = element.split("$");
+						html="";
+						html += "<tr>";
+						html += "<td style=\"background-color:"+ele[1]+"\"onclick=\"GetID(this)\">"+ele[0]+"</td>";
+						html += "<td style=\"background-color:"+ele[1]+"\"onclick=\"GetID(this)\">"+ele[1]+"</td>";
+						html += "</tr>";
+						document.write(html);
+					});
+				document.write("</table>")
+
+
+				document.write("<input type=\"text\" style=\"width:50%;float: left;\" name=\"classes\" id=\"classes\" value=\"\" placeholder=\"class\" />")
+				document.write("<input type=\"text\" style=\"width:50%;margin: 0% 50%;\" name=\"color\" value=\"#ffffff\"id=\"color\" placeholder=\"Click to change color\" onclick=\"onChangeColor()\"/>")
+				let picker = new CP(document.getElementById('color'));
+				picker.on('change', function(r, g, b, a) {
+					this.source.value = this.color(r, g, b, a);
+				});
+				
+				document.write("<div class=\"col-6 col-12-large\" >");
+					
+				//document.write("<input type=\"hidden\" name=\"classes\" id=\"classes\"></input>");
+				document.write("<input type=\"button\" style=\"margin: 2% 0% 0% 70%; class=\"button small\" id=\"add\" value=\"add\" onClick=\"OnClick_Add()\"></input>");
+				document.write("<input type=\"button\" style=\"margin: 2% 0% 0% 1%; class=\"button small\" id=\"delete\" value=\"delete\" onClick=\"OnClick_Delete()\"></input>");
+				document.write("<input type=\"button\" style=\"margin: 2% 0% 0% 1%; class=\"button small\" id=\"clear\" value=\"clear\" onClick=\"OnClick_Clear()\"></input>");
+				document.write("<input type=\"submit\" style=\"margin: 2% 0% 0% 88%; class=\"button small\" id=\"submit\" value=\"Submit\" onClick=\"OnSubmit()\"></input>");
+				document.write("</div>");
+			</script>
+		</div>
+	</form>
+{% endblock %}
+

@@ -1,0 +1,159 @@
+
+{% load static %}
+<html>
+	<head>
+		<title>Hansei Rescheduler</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" href= "{% static 'css/main.css' %}" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a class="logo" href="index">Hansei Rescheduler : {{ user.username }}</a>
+				<nav>
+					<a href="#menu">Menu</a>
+				</nav>
+			</header>
+
+		<!-- Nav -->
+			<nav id="menu">
+				<ul class="links">
+					<li><a href="index">Home</a></li>
+					<li><a href="classinfo">classinfo</a></li>
+					<li><a href="timetableimport">TimeTalbeImport</a></li>
+					<li><a href="timetable">Timetable</a></li>
+					<li><a href="manual">Manual</a></li>
+					<li><a href="logout">Logout</a></li>
+				</ul>
+			</nav>
+
+		<!-- Banner -->
+			<section id="banner">
+				<div class="inner">
+					<h1>Hansei Rescheduler</h1>
+					<p>Created by <a href="#">Taesu Jeon</a>.</p>
+				</div>
+				<video autoplay loop muted playsinline src="{% static 'images/banner.mp4' %}"></video>
+				<!-- <video autoplay src="{% static 'polls/images/banner.mp4'%}"></video> -->
+			</section>
+
+		<!-- Highlights -->
+			<section class="wrapper">
+				<div class="inner">
+					<header class="special">
+						<h2>Menu</h2>
+						<!-- <p>In arcu accumsan arcu adipiscing accumsan orci ac. Felis id enim aliquet. Accumsan ac integer lobortis commodo ornare aliquet accumsan erat tempus amet porttitor.</p> -->
+					</header>
+					<div class="highlights">
+						<section>
+							<div class="content">
+								<header>
+									<a href="classinfo" class="icon fa-vcard-o"><span class="label">Icon</span></a>
+									<h3>Imported Timetable</h3>
+								</header>
+								<p>Check all classroom's time table.</p>
+							</div>
+						</section>
+						<section>
+							<div class="content">
+								<header>
+									<a href="timetable" class="icon fa-files-o"><span class="label">Icon</span></a>
+									<h3>Table</h3>
+								</header>
+								<p>Check your time table and manager can modify time table.</p>
+							</div>
+						</section>
+						<section>
+							<div class="content">
+								<header>
+									<a href="timetableimport" class="icon fa-floppy-o"><span class="label">Icon</span></a>
+									<h3>Timetable Import</h3>
+								</header>
+								<p>Import timetable excel file so that you can check the time table on the web site.</p>
+							</div>
+						</section>
+						<!-- <section>
+							<div class="content">
+								<header>
+									<a href="#" class="icon fa-line-chart"><span class="label">Icon</span></a>
+									<h3>Interdum gravida</h3>
+								</header>
+								<p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+							</div>
+						</section>
+						<section>
+							<div class="content">
+								<header>
+									<a href="#" class="icon fa-paper-plane-o"><span class="label">Icon</span></a>
+									<h3>Faucibus consequat</h3>
+								</header>
+								<p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+							</div>
+						</section>
+						<section>
+							<div class="content">
+								<header>
+									<a href="#" class="icon fa-qrcode"><span class="label">Icon</span></a>
+									<h3>Accumsan viverra</h3>
+								</header>
+								<p>Nunc lacinia ante nunc ac lobortis ipsum. Interdum adipiscing gravida odio porttitor sem non mi integer non faucibus.</p>
+							</div>
+						</section> -->
+					</div>
+				</div>
+			</section>
+
+		<!-- CTA -->
+			<section id="cta" class="wrapper">
+				<div class="inner">
+					<h2></h2>
+					<p></p>
+				</div>
+			</section>
+			<footer id="footer">
+				<div class="inner">
+					<div class="content">
+						<section>
+							<h3>Bug fix request : Kimberly</h3>
+							<p>This website was made and tested in Chrom web browser.</p>
+							<p>If your web browser is Internet explorer, It may not show you it as it is.</p>
+							<p>Delete Internet explorer which is slowest shitest web browser and install Chrom right now.</p>
+						</section>
+						<section>
+							<h4>Let's drink corona</h4>
+							<ul class="alt">
+								<li><a href="#">You suck.</a></li>
+								<li><a href="#">Work sucks.</a></li>
+								<li><a href="#">Life is so hard.</a></li>
+								<li><a href="#">Damn Covid-19.</a></li>
+							</ul>
+						</section>
+						<section>
+							<h4>Doesn't suppor until you ask</h4>
+							<ul class="plain">
+								<li><a href="#"><i class="icon fa-twitter">&nbsp;</i>Twitter</a></li>
+								<li><a href="#"><i class="icon fa-facebook">&nbsp;</i>Facebook</a></li>
+								<li><a href="#"><i class="icon fa-instagram">&nbsp;</i>Instagram</a></li>
+								<li><a href="#"><i class="icon fa-github">&nbsp;</i>Github</a></li>
+							</ul>
+						</section>
+					</div>
+					<div class="copyright">
+						&copy; Untitled. Photos <a href="https://unsplash.co">Unsplash</a>, Video <a href="https://coverr.co">Coverr</a>.
+					</div>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="{% static 'js/jquery.min.js' %}"></script>
+			<script src="{% static 'js/browser.min.js' %}"></script>
+			<script src="{% static 'js/breakpoints.min.js' %}"></script>
+			<script src="{% static 'js/util.js' %}"></script>
+			<script src="{% static 'js/main.js' %}"></script>
+
+	</body>
+</html>

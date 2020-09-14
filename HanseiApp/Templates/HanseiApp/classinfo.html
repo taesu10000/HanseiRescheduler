@@ -1,0 +1,88 @@
+{% extends 'HanseiApp/frame_classInfo.html' %}
+{% block content %}
+{% load static %}
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/color-picker.min.js' %}"></script>
+<script src="{% static 'js/timetable.js' %}"></script>
+<script src="{% static 'js/objects.js' %}"></script>
+<script src="{% static 'js/timetable_table.js' %}"></script>
+<script src="{% static 'js/timetable_refTable.js' %}"></script>
+<script src="{% static 'js/classinfo.js' %}"></script>
+<script>
+
+</script>
+	<form method="post" action="{% url 'Hansei:classinfo' %}" id="frm">
+		<div class="gtr-uniform"style="width: 100%;">
+			<script type="text/javascript">
+			
+				// var m_TableInfo = new BaseTableInfo('{{ ImpertedExcel }}');
+				// var m_ClassesInfo = new BaseTableInfo('{{ClassInfo}}');
+				// var ClassInfoObj = m_TableInfo.GetObject();
+				// var ClassesObj = m_ClassesInfo.GetObject();
+				// // var ClassInfoObj = ParseClassesInfoObj(ClassInfo);
+				// // var ClassesObj = ParseClassesObj(Classes);
+				var m_TableInfo = new TableInfoInitializer('{{ImpertedExcel}}');
+				var m_TableInfoList = []
+				m_TableInfo.TableInfoInitialize(m_TableInfoList);
+				var m_ClassLevel = new ClassLevelInitializer('{{ClassInfo}}');
+				var m_ClassLevelList = [];
+				m_ClassLevel.ClassInfoInitialize(m_ClassLevelList);
+
+				document.write("<div class=\"col-6 col-12-large\" >");
+					document.write("<h3 style=\"line-height: 3.5\">Classes </h3>");
+					document.write("<h5 style=\"line-height: 3.5\">This table avobe is trying to show you actual color but might be wrong because of format. </h5>");
+					document.write("<select name=\"ClassRoom_selection\" id=\"ClassRoom_selection\" style=\"margin: 0% 0% 0% 0%;width: 20%;\" select=\"author\">");
+					document.write("<option value=\"0\" selected>- Select -</option>");
+					for( var classroom in m_TableInfo.GetObject()){
+						document.write("<option value=\"" + classroom + "\">" + classroom + "</option>");
+					}
+					$("#ClassRoom_selection").change(function(){
+						CreateMainTable();
+					})
+					// for (var key in ClassesObj) {
+					// 	var ObjInfo = ClassesObj[key].split("|");
+					// 	document.write("<option value=\"" + ObjInfo[0] + "\">" + ObjInfo[0] + "</option>");
+					// }
+					document.write("</select>");
+				document.write("</div>");
+				document.write("<table class=\"alt\" id=\"classroomtable\" style=\"width:30%;padding: 0;\">");
+					document.write("<tr>");
+						document.write("<th style=\"padding: 0\";>Classroom</th>");
+					document.write("</tr>");
+				CreateClassesLevelTable();
+				document.write("</table>")
+
+
+				document.write("<table class=\"alt\" id=\"classtable\" style=\"width:100%\">");
+					document.write("<tr>");
+						document.write("<th style=\"width:10%\">class name</th>");
+						document.write("<th>Mon</th>");
+						document.write("<th>Tue</th>");
+						document.write("<th>Wed</th>");
+						document.write("<th>Thu</th>");
+						document.write("<th>Fri</th>");
+					document.write("</tr>");
+					CreateMainTable();
+				document.write("</table>")
+
+
+				// document.write("<input type=\"text\" style=\"width:50%;float: left;\" name=\"classes\" id=\"classes\" value=\"\" placeholder=\"class\" />")
+				// document.write("<input type=\"text\" style=\"width:50%;margin: 0% 50%;\" name=\"color\" value=\"#ffffff\"id=\"color\" placeholder=\"Click to change color\" onclick=\"onChangeColor()\"/>")
+				// let picker = new CP(document.getElementById('color'));
+				// picker.on('change', function(r, g, b, a) {
+				// 	this.source.value = this.color(r, g, b, a);
+				// });
+				
+				document.write("<div class=\"col-6 col-12-large\" >");
+					
+				//document.write("<input type=\"hidden\" name=\"classes\" id=\"classes\"></input>");
+				// document.write("<input type=\"button\" style=\"margin: 2% 0% 0% 72%; class=\"button small\" id=\"add\" value=\"add\" onClick=\"OnClick_Add()\"></input>");
+				// document.write("<input type=\"button\" style=\"margin: 2% 0% 0% 1%; class=\"button small\" id=\"delete\" value=\"delete\" onClick=\"OnClick_Delete()\"></input>");
+				// document.write("<input type=\"button\" style=\"margin: 2% 0% 0% 1%; class=\"button small\" id=\"clear\" value=\"clear\" onClick=\"OnClick_Clear()\"></input>");
+				// document.write("<input type=\"submit\" style=\"margin: 2% 0% 0% 90%; class=\"button small\" id=\"submit\" value=\"Submit\" onClick=\"OnSubmit()\"></input>");
+				document.write("</div>");
+			</script>
+		</div>
+	</form>
+{% endblock %}
+

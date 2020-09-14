@@ -1,0 +1,56 @@
+{% extends 'HanseiApp/frame_timetableimport.html' %}
+{% block content %}
+{% load static %}
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.5/xlsx.full.min.js"></script>
+<script src="{% static 'js/timetableimport.js' %}"></script>
+<script type="text/javascript">
+	document.write("<form enctype=\"multipart/form-data\" method=\"post\" action=\"{% url 'Hansei:timetableimport' %}\" id=\"frm\">")
+		document.write("<div class=\"gtr-uniform\"style=\"width: 100%;\">")
+			document.write("<h3 style=\"line-height: 3.5;margin :0\">Timetable Import </h3>");
+			document.write("<h4 style=\"line-height: 3.5;margin :0\">Please import excel file. </h4>");
+			document.write("<h5 style=\"line-height: 3.5;margin :0\"><a href=\"manual\">See Manual</a></h5>");
+			document.write("<h5 style=\"line-height: 3.5;margin :0\">1. Input timetable sheet name.</h5>");
+			document.write("<input type=\"text\" style=\"width:50%;\" name=\"sheetName\" id=\"sheetName\" placeholder=\"Input name the sheet(Default : Class)\"></input>");
+			
+			document.write("<h5 style=\"line-height: 3.5;margin :0\">2. Set the sheet size if the sheet is bigger than 200 * 30 cells.</h5>");
+			document.write("<input type=\"text\" style=\"width:50%;margin:5px 0px;\" name=\"sheetRowCnt\" id=\"sheetRowCnt\" placeholder=\"Input end of row in the sheet(Default : 200)\"></input>");
+			document.write("<input type=\"text\" style=\"width:50%;margin:5px 0px;\" name=\"sheetCloCnt\" id=\"sheetCloCnt\" placeholder=\"Input end of column in the sheet(Default : 30)\"></input>");
+			
+			document.write("<h5 style=\"line-height: 3.5;margin :0\">3. Import timetable Exel lFile</a></h5>");
+			document.write("<input type=\"hidden\" name=\"FileName\" id=\"FileName\"></input>");
+			document.write("<input type=\"file\" class=\"button small\" id=\"Excelimport\" name=\"Excelimport\" accept=\".xls,.xlsx;\"value=\"\"></input>{{message}}");
+			document.write("<input type=\"submit\" style=\"margin: 2% 0% 0% 88%;\" class=\"button small\" id=\"submit\" value=\"Submit\"></input>");
+			$("#submit").click(function(){
+				var Fullpath = $("#Excelimport").val().split("\\");
+				var path = "";
+				Fullpath.forEach(element => {
+					path = element;
+				});
+				$("#FileName").val(path);
+				
+				if(!$("#sheetRowCnt").val())
+				{
+					$("#sheetRowCnt").val(200);
+				}
+				if(!$("#sheetCloCnt").val())
+					$("#sheetCloCnt").val(30);
+				if(!$("#sheetName").val()) ///TEST Code
+					$("#sheetName").val("Class");
+
+
+			})
+
+			// 	$("#Excelimport").change(function(event){
+			// 		file=$('#Excelimport').get(0).files[0];
+			// 		 alert("Uploaded");
+			// 		//importTimetable(event, submit);
+			// 		//alert(txt);
+			// 		//$("#excelvalue").val(txt);
+			// 		//alert($("#excelvalue").val());
+			// });
+		document.write("</div>")
+	document.write("</form>")
+</script>
+{% endblock %}
+

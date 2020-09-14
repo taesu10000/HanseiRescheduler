@@ -1,0 +1,229 @@
+{% extends 'HanseiApp/frame_timetable.html' %}
+{% block content %}
+{% load static %}
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/timetable.js' %}"></script>
+<script src="{% static 'js/objects.js' %}"></script>
+<script src="{% static 'js/timetable_table.js' %}"></script>
+<script src="{% static 'js/timetable_refTable.js' %}"></script>
+<script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.ui.position.min.js" type="text/javascript"></script>
+<script>
+	
+</script>
+	<form action="{% url 'Hansei:timetableSubmit' %}" method="post" id="frm">
+		<div class="col-12"> <!--달력 추가 -->
+			<label class="DataPicker" for="SelectedDate">Current date:</label>
+			<input class="DataPicker" type="date" id="SelectedDate" name="SelectedDate" min="2020-01-01" max="2030-12-31" onchange=onClickCalendar()></input>
+			<!-- <input class="btn btn-lg btn-primary btn-block" type="submit"name="Search" value="Search" style="position: relative;padding: 0px 0.55rem;"></input> -->
+			<script>
+				const list = new Array();
+				const listAll = new Array();
+				var targetID = "";
+				var seldate = "{{curDatestr}}";
+				var author = "{{author}}"; //작성자
+				var AllUsers = "{{AllUsers}}";
+				var selusers = "{{seluser}}";  //{UserID,UserPK,IsStaff}
+				var m_timetableinfo = "{{TimetableCellInfo}}";// mon9|mon10|mon11|mon12|mon13
+				var memo = "{{Memo}}";
+				var cellinfos = m_timetableinfo.split("|");
+				var seluser = selusers.split("$");//Username $ Userpk $ isStaff
+				var today_ = GetToday();
+				var m_mainTableObjects = {};
+
+				var m_TableInfo = new TableInfoInitializer('{{ ImpertedExcel }}');
+				var m_TableInfoList = []
+				m_TableInfo.TableInfoInitialize(m_TableInfoList);
+				var m_ClassLevel = new ClassLevelInitializer('{{ClassesInfo}}');
+				var m_ClassLevelList = [];
+				m_ClassLevel.ClassInfoInitialize(m_ClassLevelList);
+
+				if(seldate == today_)		
+					document.getElementById('SelectedDate').value = new Date().toISOString().substring(0, 10);
+				else
+					document.getElementById('SelectedDate').value = seldate.substring(0, 10);
+
+				if(seluser[2] == "True")//IsStaff
+				{
+					document.write("<input type=\"hidden\" name=\"seluser\" id=\"seluser\"></input>");
+					document.write("<select name=\"User_selection\" id=\"User_selection\" style=\"margin: 0% 0% 0% 0%;width:auto%;\" select=\"author\"onchange=\"chageLangSelect()\">");
+					//document.write("<option value=\"\">- Select -</option>");
+					var Users = AllUsers.split("|");
+					Users.forEach(element => {
+						var User = element.split("$");
+						var selected = "";
+						if (seluser[0] == User[0])
+							selected = "selected";
+						document.write("<option value=\""+ User[1] + "\" " + selected + ">" + User[0] + "</option>");	
+					});
+					document.write("</select>");
+				}
+
+				document.write("<table class=\"alt\" id=\"classroomtable\" style=\"width:30%;padding: 0;\">");
+					document.write("<tr>");
+						document.write("<th style=\"padding: 0\";>Classroom</th>");
+					document.write("</tr>");
+					CreateClassesLevelTable();
+				document.write("</table>")
+			</script>
+		</div>	
+		<script type="text/javascript">
+	
+			document.write("<div class=\"col-12\" right=\"10%\">");
+				document.write("<table class=\"alt\" id=\"classtable\" style=\"width:100%\">");
+				document.write("<tr>");
+					var event = "onClick=\"OnmClickth(this)\"";
+					if(seluser[2] == "False")
+						event = "";
+					document.write("<th style=\"width:10%\">Time</th>");
+					document.write("<th id=\"mon\" " + event + ">Mon</th>");
+					document.write("<th id=\"tue\" " + event + ">Tue</th>");
+					document.write("<th id=\"wed\" " + event + ">Wed</th>");
+					document.write("<th id=\"thu\" " + event + ">Thu</th>");
+					document.write("<th id=\"fri\" " + event + ">Fri</th>");
+					//document.write("<th onClick=\"OnmClickth(this)\"name=\"Fri\" id=\"Fri\">Fri</th>");
+				document.write("</tr>");
+				var startime = 9;
+
+				const week = new Map();
+					week.set(0, 'mon');
+					week.set(1, 'tue');
+					week.set(2, 'wed');
+					week.set(3, 'thu');
+					week.set(4, 'fri');
+
+				for( i = 0; i < 9; i++ )
+				{
+					document.write("<tr>");
+					document.write("<th id=\""+startime+"\""+ event +">"+startime+" ~ "+(startime+1)+"</th>");
+					//document.write("<th id=\""+startime+"\" onClick=\"OnmClickth(this)\">"+startime+" ~ "+(startime+1)+"</th>");
+					for( j = 0; j < 5; j++ )
+					{
+						var talbeId = week.get(j) + startime;
+						// mon|thu fri10
+						listAll.push(talbeId);
+						var tableObject = new ObjectData("",talbeId);
+						m_mainTableObjects[talbeId] = tableObject;
+						//클릭시 색 바꾸고 클릭 된 ID를 Post로 넘김
+						CreateTd(tableObject);
+					}
+					startime+=1;
+					document.write("</tr>");
+				}
+				document.write("</table>");
+				document.write("</div>");
+				document.write("<div class=\"col-12\">");
+					document.write("<input type=\"hidden\" name=\"memo\" id=\"memo\"></input>");
+					document.write("<textarea name=\"textarea\" id=\"textarea\" placeholder=\"Type to pass to the manager\" rows=\"6\">"+memo+"</textarea>");
+				document.write("</div>");	
+			document.write("<input type=\"hidden\" name=\"timetablecellinfo\" id=\"timetablecellinfo\"></input>");
+			document.write("<input class=\"btn btn-lg btn-primary btn-block\" type=\"submit\" value=\"Submit\" id=\"schedule\" name=\"schedule\" style=\"position: relative;left: 90%;padding: 0px 1.55rem\"></input>");
+			var ContextManu_ = new ContextManu();
+			document.write("<div id=\"myModal\" class=\"modal\">");
+				document.write("<div class=\"modal-content\">");
+					document.write("<div class=\"modal-header\">");
+						document.write("<span class=\"close\">&times;</span>");
+						document.write("<h2 id=\'headerlable\'></h2>");
+					document.write("</div>");
+					document.write("<div class=\"modal-body\">");
+						document.write("<table class=\"alt\" id=\"refTable\" style=\"width:100%\">");
+							document.write("<tr>");
+								for(var i = 0; i < 5; i++)
+								{
+									document.write("<th style=\"width:12%\">classroom</th>");
+									document.write("<th style=\"width:8%\">class</th>");
+								}
+							document.write("</tr>");
+							CreateRefTable();
+						document.write("</table>")
+					document.write("</div>");
+					document.write("<div class=\"modal-footer\" id=\"footerlable\">");
+						document.write("<h3>Click a cell above</h3>");
+					document.write("</div>");
+					document.write("<div class=\"modal-body\">");
+						document.write("<table class=\"alt\" id=\"refFooterTable\" style=\"width:100%\">");
+						for(var i = 0; i < 5; i++)
+						{
+							document.write("<th style=\"width:12%\">classroom</th>");
+							document.write("<th style=\"width:8%\">time</th>");
+						}
+						document.write("</table>")
+					document.write("</div>");
+			document.write("</div>");
+			
+				
+			//Get the modal
+			// Get the button that opens the modal
+			// Get the <span> element that closes the modal
+			// When the user clicks the button, open the modal 
+			// When the user clicks on <span> (x), close the modal
+			$(".close").click(function() {
+				$("#myModal").css('display',"none");
+			});	
+
+			$('#schedule').click(function() {
+				// Avoid the real one
+				onsubmit();
+			});
+			$('#classtable').bind("contextmenu", function (event) {
+				// Avoid the real one
+				event.preventDefault();
+				// Show contextmenu
+				targetID = event.target.id;
+				ContextManu_.CreateContextSubMenu(targetID);
+				var parentOffset = $("#main").offset();
+				var posY = event.pageY - parseInt(parentOffset.top);
+				$(".context_main").finish().toggle(100).
+				// In the right position (the mouse)
+				css({
+					top: posY + "px",
+					left: event.pageX + "px"
+				});
+			});
+			$('#main').bind("mousedown", function (e) {
+				// If the clicked element is not the menu
+				if (!$(e.target).parents(".context_main").length > 0) {
+					// Hide it
+					$(".context_main").hide(100);
+				}
+			});
+
+			 $(".context_sub").bind("mouseleave", function(){
+				var menu = this;
+				var ul = $("ul", menu)[0];
+				if(!ul || !ul.classList.contains("-visible")) return;
+				menu.classList.remove("-active");
+				//ul.classList.add("-animating");
+				ul.classList.remove("-visible");
+			 })
+			 $(".context_sub").bind("mouseenter", function(event){
+				var menu = this;
+				var ul = $("ul", menu)[0];
+				var parentOffset = parseInt( $(".context_main").offset().top);
+				$(".context_sub ul").css("top", event.pageY-parentOffset +"px");
+				$(".context_sub ul").css("left", $(".context_main").width());
+				if(!ul || ul.classList.contains("-visible")) return;
+				menu.classList.add("-active");
+				ul.classList.add("-animating");
+				ul.classList.add("-visible");
+			 })
+			$("#classtable").click(function(event){
+				targetID = event.target.id;
+				CreateRefTable();
+				$("#myModal").css('display',"block");
+			});
+
+			$("#refTable").click(function(event){
+				RefFooterTable(event.target.textContent.trim(),$(event.target).css("backgroundColor"));
+			});
+
+			$(".context_main li").click(function(event){
+			// This is the triggered action name
+				var text = event.target.textContent;
+				OnClickedContextMenu(targetID,$(this).attr("data-action"),text);
+				// Hide it AFTER the action was triggered
+				$(".context_main").hide(100);
+			});
+
+		</script>
+	</form>
+{% endblock %}
